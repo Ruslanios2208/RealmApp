@@ -107,11 +107,12 @@ extension TasksViewController {
         
         let alert = UIAlertController.createAlert(withTitle: title, andMessage: "What do you want to do?")
         
-        alert.action(with: task) { [weak self] taskTitle, note in
-            if let _ = task, let _ = completion {
-                // TODO - edit task
+        alert.action(with: task) { newValue, note in
+            if let task = task, let completion = completion {
+                StorageManager.shared.rename(task, to: newValue, withNote: note)
+                completion()
             } else {
-                self?.save(task: taskTitle, withNote: note)
+                self.save(task: newValue, withNote: note)
             }
         }
         
